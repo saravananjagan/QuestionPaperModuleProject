@@ -1,0 +1,90 @@
+<html>
+
+<head>
+    <title>Question Paper</title>
+</head>
+
+<body>
+    
+    <div id="DocumentContent" style="display:none;">
+        <!-- Examination Information Table (One for each question paper and need not loop up)-->
+        <table style="width: 100%; margin: 0px;" id="ExamInfo">
+            <tbody>
+                <tr>
+                    <td style="width: 20%;" id="classInfo">Class: XI</td>
+                    <td style="text-align: center;width: 60%;" id="schlName">School Name Higher Secondary School</td>
+                    <td style="text-align: right;" id="markInfo">Marks: 200</td>
+                </tr>
+                <tr>
+                    <td style="width: 20%;" id="duration">Time : 1.00 Hrs</td>
+                    <td style="text-align: center;width: 60%;" id="testName">Test Name</td>
+                    <td style="text-align: right;">&emsp;</td>
+                </tr>
+                <tr>
+                    <td style="width: 20%;">&emsp;</td>
+                    <td style="text-align: center;width: 60%;" id="subjectName">Subject Name</td>
+                    <td style="text-align: right;">&emsp;</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Part Information -->
+        <table style="width: 100%; margin: 0px;" class="partInfo">
+            <tbody>
+                <tr>
+                    <td class="partName">I. PartMCQ :</td>
+                    <td style="text-align: right;" class="partMark">[10 x 1 = 10]</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Question Element -->
+        <p style="margin: 0px;" class="quest">1. Who is the father of Economics</p>
+        <!-- Choices Table Element -->
+        <table style="width: 100%; margin-left: 20px;" class="optionCollection">
+            <tbody>
+                <tr>
+                    <td style="width: 20%;" class="option">a. Max Muller</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <button onclick="Export2Doc('DocumentContent', 'word-content');">Export as .doc</button>
+    <script>
+        function Export2Doc(elementId, filename = '') {
+            var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
+            var postHtml = "</body></html>";
+            var html = preHtml + document.getElementById(elementId).innerHTML + postHtml;
+
+            var blob = new Blob(['\ufeff', html], {
+                type: 'application/msword'
+            });
+
+            // Specify link url
+            var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+
+            // Specify file name
+            filename = filename ? filename + '.doc' : 'document.doc';
+
+            // Create download link element
+            var downloadLink = document.createElement("a");
+
+            document.body.appendChild(downloadLink);
+
+            if (navigator.msSaveOrOpenBlob) {
+                navigator.msSaveOrOpenBlob(blob, filename);
+            } else {
+                // Create a link to the file
+                downloadLink.href = url;
+
+                // Setting the file name
+                downloadLink.download = filename;
+
+                //triggering the function
+                downloadLink.click();
+            }
+
+            document.body.removeChild(downloadLink);
+        }
+    </script>
+</body>
+
+</html>

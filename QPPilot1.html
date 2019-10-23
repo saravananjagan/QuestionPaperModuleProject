@@ -1,0 +1,196 @@
+<html>
+
+<head>
+    <title>Question Paper Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
+    <style>
+        .stdSection {
+            width: 30%;
+            display: inline-block;
+        }
+
+        .stdText {
+            display: inline-block;
+        }
+
+        .halfrem {
+            margin-bottom: 0.5rem !important;
+        }
+
+        .border-shadow {
+            border-color: #ffffff !important;
+            /* box-shadow: 1px 1px 1px 1px grey; */
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+            -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+            -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+            -o-box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+            border-radius: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Form for getting information of the examination -->
+    <center>
+        <h2 class="text-success">Question Paper Generator</h2>
+    </center>
+    <div class="container">
+        <div class="card border-primary" style="border-radius:0px;" id="ExamInfo">
+
+
+        </div>
+    </div>
+    
+
+    <!-- Question Paper Template -->
+    <div id="DocumentContent" style="display:none;">
+        <!-- Examination Information Table (One for each question paper and need not loop up)-->
+        <table style="width: 100%; margin: 0px;" id="ExamInfoQuest">
+
+        </table>
+        <!-- Part Information -->
+        <table style="width: 100%; margin: 0px;" class="partInfo">
+            <tbody>
+                <tr>
+                    <td class="partName">I. PartMCQ :</td>
+                    <td style="text-align: right;" class="partMark">[10 x 1 = 10]</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Question Element -->
+        <p style="margin: 0px;" class="quest">1. Who is the father of Economics</p>
+        <!-- Choices Table Element -->
+        <table style="width: 100%; margin-left: 20px;" class="optionCollection">
+            <tbody>
+                <tr>
+                    <td style="width: 20%;" class="option">a. Max Muller</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script type='text/babel'>
+        class ExaminationInfoQuestComp extends React.Component{
+            render(){
+                return(
+                    <tbody>
+                        <tr>
+                            <td style={{width: '20%'}} id="classInfo">Class: {this.props.std}</td>
+                            <td style={{textAlign: 'center',width: '60%'}} id="schlName">{this.props.schlName}</td>
+                            <td style={{textAlign: 'right'}} id="markInfo">Marks: {this.props.marks}</td>
+                        </tr>
+                        <tr>
+                            <td style={{width: '20%'}} id="duration">Time : {this.props.time}</td>
+                            <td style={{textAlign: 'center',width: '60%'}} id="testName">{this.props.exam}</td>
+                            <td style={{textAlign: 'right'}}>&emsp;</td>
+                        </tr>
+                        <tr>
+                            <td style={{width: '20%'}}>&emsp;</td>
+                            <td style={{textAlign: 'center',width: '60%'}} id="subjectName">{this.props.sub}</td>
+                            <td style={{textAlign: 'right'}}>&emsp;</td>
+                        </tr>                        
+                    </tbody>
+                );
+            }
+        }
+
+        class PartInfoQuestComp extends React.Component{
+            render(){
+                return(
+                    <div></div>
+                );
+            }
+        }
+
+        class QuestionQuestComp extends React.Component{
+            render(){
+                return(
+                    <div></div>
+                );
+            }
+        }
+
+        class optionQuestComp extends React.Component{
+            render(){
+                return(
+                    <div></div>
+                );
+            }
+        }
+
+        class ExaminationInfoComponent extends React.Component {
+            constructor(props){
+                super(props);
+                this.submitExamInfo= this.submitExamInfo.bind(this);
+                this.resetExamInfo=this.resetExamInfo.bind(this);
+            }
+            submitExamInfo(){
+                var school=this.schlNme;                
+                ReactDOM.render(
+                    <ExaminationInfoQuestComp 
+                        schlName={school.value} 
+                        std={this.std.value} 
+                        marks={this.marks.value}
+                        time={this.time.value}
+                        exam={this.exam.value}
+                        sub={this.sub.value}
+                    />, document.getElementById("ExamInfoQuest"))
+            }
+            resetExamInfo(){
+                this.schlNme.value="";
+                this.std.value="";
+                this.marks.value="";
+                this.time.value="";
+                this.exam.value="";
+                this.sub.value="";
+                ReactDOM.render(
+                    <ExaminationInfoQuestComp 
+                        schlName={this.schlNme.value} 
+                        std={this.std.value} 
+                        marks={this.marks.value}
+                        time={this.time.value}
+                        exam={this.exam.value}
+                        sub={this.sub.value}
+                    />, document.getElementById("ExamInfoQuest"))
+            }
+            render() {
+                return (
+                    <div className="card-body">
+                        <h3 className="card-title text-primary">Examination Information</h3>
+                        <p className="lead halfrem">School Name: </p> <input type="text" className="form-control"
+                            placeholder="School Name" id="schoolName" ref={(c)=> this.schlNme=c} /> <br />
+                        <p className="lead stdText">Std and Section:&emsp;</p> <input type="text" className="form-control stdSection"
+                            placeholder="Std and Section" id="stdSection" ref={(c)=> this.std=c} />
+                        <br />
+                        <p className="lead stdText">Marks Text:&emsp;</p> <input type="text" className="form-control stdSection"
+                            placeholder="Marks Text" id="marksText" ref={(c)=> this.marks=c} />
+                        <p className="lead stdText">Hours Text:&emsp;</p> <input type="text" className="form-control stdSection"
+                            placeholder="Marks Text" id="hoursText" ref={(c)=> this.time=c} />
+                        <br />
+                        <p className="lead stdText">Examination Name:&emsp;</p> <input type="text" className="form-control"
+                            placeholder="Examination Name" id="examName" ref={(c)=> this.exam=c} />
+                        <br />
+                        <p className="lead stdText">Subject Name:&emsp;</p> <input type="text" className="form-control"
+                            placeholder="Subject Name" id="subName" ref={(c)=> this.sub=c} />
+                        <br />
+                        <div className="text-right">
+                            <button className="btn btn-outline-danger" onClick={this.resetExamInfo}>Reset</button>&emsp;<button type="button"
+                                className="btn btn-outline-success" onClick={this.submitExamInfo}>Submit</button>
+                        </div>                     
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(<ExaminationInfoComponent />,document.getElementById("ExamInfo"));
+    </script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
