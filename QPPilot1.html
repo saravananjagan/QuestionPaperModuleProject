@@ -43,8 +43,10 @@
 
 
         </div>
+    </div><br/>
+    <div class="container">
+        
     </div>
-    
 
     <!-- Question Paper Template -->
     <div id="DocumentContent" style="display:none;">
@@ -184,8 +186,16 @@
                 );
             }
         }
-
+        class AddPartBtnComponent extends React.Component{
+            
+            render(){
+                return(
+                    <button type="button" className="btn btn-outline-primary">Add Part</button>
+                )
+            }
+        }
         ReactDOM.render(<ExaminationInfoComponent />,document.getElementById("ExamInfo"));
+
     </script>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
