@@ -44,8 +44,8 @@
 
         </div>
     </div><br/>
-    <div class="container">
-        
+    <div class="container" id="PartFormsContainer">
+
     </div>
 
     <!-- Question Paper Template -->
@@ -75,6 +75,7 @@
         </table>
     </div>
     <script type='text/babel'>
+    // COMPONENTS
         class ExaminationInfoQuestComp extends React.Component{
             render(){
                 return(
@@ -186,16 +187,48 @@
                 );
             }
         }
-        class AddPartBtnComponent extends React.Component{
-            
+        class PartContainerComponent extends React.Component{
+            constructor(props){
+                super(props);
+                this.PartForms=[];
+                this.state={
+                    parts:this.PartForms
+                }
+                this.AddPart=this.AddPart.bind(this);
+            }
+            AddPart(){
+                this.PartForms.push(<PartComponent />);
+                this.setState({
+                    parts:this.PartForms
+                });
+                console.log(this.state.parts);
+            }
             render(){
                 return(
-                    <button type="button" className="btn btn-outline-primary">Add Part</button>
+                    
+                    <div className="container" id="partsContainer" style={{margin: '0px;'}}>
+                        <button type="button" className="btn btn-outline-primary" onClick={this.AddPart}>Add Part</button>
+                        <div>{this.state.parts}</div>
+                    </div>
+                )
+            }
+        }
+        class PartComponent extends React.Component{
+            render(){
+                return(
+                    <div className="card border-primary" style={{borderRadius:'0px;'}} id="PartDetails">
+                        <button type="button" class="btn btn-outline-primary">Add Questions</button>
+                    </div>
                 )
             }
         }
         ReactDOM.render(<ExaminationInfoComponent />,document.getElementById("ExamInfo"));
-
+        ReactDOM.render(<PartContainerComponent />,document.getElementById("PartFormsContainer"));
+//FUNCTIONS
+    // const AddPart=()=>{
+    //     PartForms.push(<PartComponent />);
+    //     //ReactDOM.render(<PartContainerComponent forms={PartForms} />,document.getElementById("PartFormsContainer"));
+    // }
     </script>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
