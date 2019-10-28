@@ -33,46 +33,31 @@
     </style>
 </head>
 
-<body>
+<body style="margin: 20px;">
     <!-- Form for getting information of the examination -->
     <center>
-        <h2 class="text-success">Question Paper Generator</h2>
+        <h2 class="text-success">Question Paper Generator</h2>                
     </center>
+    <br/>
+    <center>
+        <button class="btn btn-outline-success" onclick="Export2Doc('DocumentContent', 'word-content');">Export as .doc</button>
+    </center>
+    <br/>
     <div class="container">
-        <div class="card border-primary" style="border-radius:0px;" id="ExamInfo">
-
-
+        <div class="card border-primary" style="border-radius:0px" id="ExamInfo">
         </div>
     </div><br/>
     <div class="container" id="PartFormsContainer">
-
     </div>
 
     <!-- Question Paper Template -->
-    <div id="DocumentContent" style="display:none;">
+    <div id="DocumentContent" style="display:none; font-family:Calibri; font-size: 0.5rem;">
         <!-- Examination Information Table (One for each question paper and need not loop up)-->
-        <table style="width: 100%; margin: 0px;" id="ExamInfoQuest">
-
-        </table>
-        <!-- Part Information -->
-        <table style="width: 100%; margin: 0px;" class="partInfo">
-            <tbody>
-                <tr>
-                    <td class="partName">I. PartMCQ :</td>
-                    <td style="text-align: right;" class="partMark">[10 x 1 = 10]</td>
-                </tr>
-            </tbody>
-        </table>
-        <!-- Question Element -->
-        <p style="margin: 0px;" class="quest">1. Who is the father of Economics</p>
-        <!-- Choices Table Element -->
-        <table style="width: 100%; margin-left: 20px;" class="optionCollection">
-            <tbody>
-                <tr>
-                    <td style="width: 20%;" class="option">a. Max Muller</td>
-                </tr>
-            </tbody>
-        </table>
+        <table style="width: 100%; margin: 0px" id="ExamInfoQuest">
+        </table>                
+        <!-- Part Collection -->
+        <div style="margin:0px" id="PartCollectionContainer">
+        </div>
     </div>
     <script type='text/babel'>
     // COMPONENTS
@@ -81,18 +66,18 @@
                 return(
                     <tbody>
                         <tr>
-                            <td style={{width: '20%'}} id="classInfo">Class: {this.props.std}</td>
-                            <td style={{textAlign: 'center',width: '60%'}} id="schlName">{this.props.schlName}</td>
-                            <td style={{textAlign: 'right'}} id="markInfo">Marks: {this.props.marks}</td>
+                            <td style={{width: '20%'}} id="classInfo"><strong>Class: {this.props.std}</strong></td>
+                            <td style={{textAlign: 'center',width: '60%'}} id="schlName"><strong>{this.props.schlName}</strong></td>
+                            <td style={{textAlign: 'right'}} id="markInfo"><strong>Marks: {this.props.marks}</strong></td>
                         </tr>
                         <tr>
-                            <td style={{width: '20%'}} id="duration">Time : {this.props.time}</td>
-                            <td style={{textAlign: 'center',width: '60%'}} id="testName">{this.props.exam}</td>
+                            <td style={{width: '20%'}} id="duration"><strong>Time : {this.props.time}</strong></td>
+                            <td style={{textAlign: 'center',width: '60%'}} id="testName"><strong>{this.props.exam}</strong></td>
                             <td style={{textAlign: 'right'}}>&emsp;</td>
                         </tr>
                         <tr>
                             <td style={{width: '20%'}}>&emsp;</td>
-                            <td style={{textAlign: 'center',width: '60%'}} id="subjectName">{this.props.sub}</td>
+                            <td style={{textAlign: 'center',width: '60%'}} id="subjectName"><strong>{this.props.sub}</strong></td>
                             <td style={{textAlign: 'right'}}>&emsp;</td>
                         </tr>                        
                     </tbody>
@@ -103,24 +88,72 @@
         class PartInfoQuestComp extends React.Component{
             render(){
                 return(
-                    <div></div>
+                    <div style={{margin:'0px'}} id={this.props.pidmain}>
+                        <table style={{width: '100%', margin: '0px'}} class="partInfo">
+                            <tbody>
+                                <tr>
+                                    <td class="partName"><strong id={this.props.pname}></strong></td>
+                                    <td style={{textAlign: 'right'}} class="partMark"><strong id={this.props.pmark}></strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div id={this.props.pqid}></div>
+                    </div>    
                 );
+            }
+        }
+
+        class PartCollectionComp extends React.Component{
+            render(){
+                return(
+                    <div style={{margin:'0px'}}>
+                        {this.props.pcollection}
+                    </div>
+                )
             }
         }
 
         class QuestionQuestComp extends React.Component{
             render(){
                 return(
-                    <div></div>
+                    <div style={{margin:'0px'}}>
+                        <p style={{margin: '0px'}} class="quest" id={this.props.qid}></p>
+                        <div style={{margin:'0px'}} id={this.props.pqcid}>                            
+                        </div>
+                    </div>
                 );
             }
         }
 
-        class optionQuestComp extends React.Component{
+        class QCollectionComp extends React.Component{
             render(){
                 return(
-                    <div></div>
-                );
+                    <div style={{margin: '0px'}}>
+                        {this.props.qcollection}
+                    </div>
+                )
+            }
+        }
+
+        class OptionCollectionComp extends React.Component{
+            render(){
+                return(
+                    <table style={{width: '100%', marginLeft: '20px'}} className="optionCollection">
+                        <tbody>
+                            <tr>
+                                {this.props.ccollection}
+                            </tr>
+                        </tbody>                        
+                    </table>
+                )
+            }
+        }
+
+        class OptionQuestComp extends React.Component{
+            render(){
+                return(
+                    <td style={{width: '20%'}} id={this.props.cid}></td>
+                )
             }
         }
 
@@ -168,10 +201,10 @@
                         <p className="lead stdText">Std and Section:&emsp;</p> <input type="text" className="form-control stdSection"
                             placeholder="Std and Section" id="stdSection" ref={(c)=> this.std=c} />
                         <br />
-                        <p className="lead stdText">Marks Text:&emsp;</p> <input type="text" className="form-control stdSection"
-                            placeholder="Marks Text" id="marksText" ref={(c)=> this.marks=c} />
+                        <p className="lead stdText" style={{display:'inline-block'}}>Marks Text:&emsp;</p> <input type="text" className="form-control stdSection"
+                            placeholder="Marks Text" id="marksText" ref={(c)=> this.marks=c} /> &emsp;
                         <p className="lead stdText">Hours Text:&emsp;</p> <input type="text" className="form-control stdSection"
-                            placeholder="Marks Text" id="hoursText" ref={(c)=> this.time=c} />
+                            placeholder="Hours Text" id="hoursText" ref={(c)=> this.time=c} />
                         <br />
                         <p className="lead stdText">Examination Name:&emsp;</p> <input type="text" className="form-control"
                             placeholder="Examination Name" id="examName" ref={(c)=> this.exam=c} />
@@ -191,22 +224,30 @@
             constructor(props){
                 super(props);
                 this.PartForms=[];
+                this.PartInfoData=[];
+                this.pid=0;
                 this.state={
                     parts:this.PartForms
                 }
                 this.AddPart=this.AddPart.bind(this);
             }
             AddPart(){
-                this.PartForms.push(<PartComponent />);
+                var pnameid=this.pid+"_pn";
+                var pmarkid=this.pid+"_pm";
+                var pqid=this.pid+"_pqid";
+                var pidmain=this.pid+"_pidmain";
+                this.PartForms.push(<PartComponent pnameid={pnameid} pmarkid={pmarkid} pqid={pqid} pidmain={pidmain}/>);
+                this.PartInfoData.push(<PartInfoQuestComp pname={pnameid} pmark={pmarkid} pqid={pqid} pidmain={pidmain}/>)
                 this.setState({
                     parts:this.PartForms
                 });
-                console.log(this.state.parts);
+                ReactDOM.render(<PartCollectionComp pcollection={this.PartInfoData} />,document.getElementById("PartCollectionContainer"));
+                this.pid=this.pid+1;
             }
             render(){
                 return(
                     
-                    <div className="container" id="partsContainer" style={{margin: '0px;'}}>
+                    <div id="partsContainer" style={{margin: '0px'}}>
                         <button type="button" className="btn btn-outline-primary" onClick={this.AddPart}>Add Part</button>
                         <div>{this.state.parts}</div>
                     </div>
@@ -214,14 +255,124 @@
             }
         }
         class PartComponent extends React.Component{
+            constructor(props){
+                super(props);
+                this.QuestForms=[];
+                this.QuestData=[];            
+                this.qid=0;
+                this.state={
+                    quests:this.QuestForms
+                }
+                this.ChangePartNameInfo=this.ChangePartNameInfo.bind(this);
+                this.ChangePartMarkInfo=this.ChangePartMarkInfo.bind(this);
+                this.RemovePart=this.RemovePart.bind(this);
+                this.AddQuestion=this.AddQuestion.bind(this);
+                this.pnameidval=this.props.pnameid;
+                this.pmarkidval=this.props.pmarkid;
+                this.pqid=this.props.pqid;   
+                this.pidinpmain=this.props.pidmain+"_inpmain";             
+            }
+            ChangePartNameInfo(e){
+                document.getElementById(this.pnameidval).textContent=e.target.value;
+            }
+            ChangePartMarkInfo(e){
+                document.getElementById(this.pmarkidval).textContent=e.target.value;
+            }
+            AddQuestion(){
+                var qid=this.qid+"_qid"+this.pqid;
+                var pqcid=this.qid+"_qid"+this.pqid+"_pqcid";
+                this.QuestForms.push(<QuestionComponent qid={qid} pqcid={pqcid}/>);
+                this.QuestData.push(<QuestionQuestComp qid={qid} pqcid={pqcid} />);
+                this.setState({
+                    quests:this.QuestForms
+                });
+                this.qid=this.qid+1;
+                ReactDOM.render(<QCollectionComp qcollection={this.QuestData} />,document.getElementById(this.pqid));
+            }
+
+            RemovePart(id,inpid){
+                document.getElementById(id).remove();
+                document.getElementById(inpid).remove();
+            }
+
             render(){
                 return(
-                    <div className="card border-primary" style={{borderRadius:'0px;'}} id="PartDetails">
-                        <button type="button" class="btn btn-outline-primary">Add Questions</button>
+                    <div style={{margin:'0px'}} id={this.pidinpmain}>
+                    <br/>
+                    <div className="card border-primary" style={{borderRadius:'0px'}} id="PartDetails">
+                        <div className="card-body"> 
+                            <button type="button" className="btn btn-outline-danger" style={{float:'right'}} onClick={(id,inpid)=>{this.RemovePart(this.props.pidmain,this.pidinpmain)}}>Remove Part</button><br/>                           
+                            <p className="lead halfrem">Part Name: </p> <input type="text" className="form-control"
+                            placeholder="Eg: I. Part Name:" onChange={(e)=>{this.ChangePartNameInfo(e)}} /> <br />
+                            <p className="lead stdText">Marks Text:&emsp;</p> <input type="text" className="form-control stdSection"
+                            placeholder="Eg: [20 x 1 = 20]" onChange={(e)=>{this.ChangePartMarkInfo(e)}} /><br />                            
+                            <button type="button" className="btn btn-outline-primary" onClick={this.AddQuestion}>Add Questions</button>
+                            {this.state.quests}
+                        </div>                        
+                    </div>
+                    </div>                    
+                )
+            }
+        }
+        class QuestionComponent extends React.Component{
+            constructor(props){
+                super(props);
+                this.cid=0;
+                this.ChoiceForms=[];
+                this.ChoiceData=[];
+                this.state={
+                    choice:this.ChoiceForms
+                }
+                this.ChangeQuestion=this.ChangeQuestion.bind(this);
+                this.AddChoice=this.AddChoice.bind(this);
+                this.qid=this.props.qid;
+            }
+            ChangeQuestion(e){
+                document.getElementById(this.qid).textContent=e.target.value;
+            }
+            AddChoice(){
+                var cid=this.cid+"_cqp"+this.qid;
+                this.ChoiceForms.push(<ChoiceInputComponent cid={cid} />);
+                this.ChoiceData.push(<OptionQuestComp cid={cid} />);
+                this.setState({
+                    choice:this.ChoiceForms
+                });
+                ReactDOM.render(<OptionCollectionComp ccollection={this.ChoiceData} />,document.getElementById(this.props.pqcid))
+                this.cid=this.cid+1;
+            }
+            render(){
+                return(
+                    <div style={{margin:'0px'}}>
+                        <br />
+                        <input type="text" className="form-control" placeholder="Eg: 1. What is science?" onChange={(e)=>{this.ChangeQuestion(e)}}/> 
+                        <br />
+                        <button type="button" className="btn btn-outline-primary" onClick={this.AddChoice}>Add Choice</button>
+                        
+                        <div style={{padding:'10px'}}>                         
+                        {this.state.choice}
+                        </div>
                     </div>
                 )
             }
         }
+        
+        class ChoiceInputComponent extends React.Component{
+            constructor(props){
+                super(props);
+                this.ChangeChoice=this.ChangeChoice.bind(this);
+            }
+            ChangeChoice(e){
+                document.getElementById(this.props.cid).textContent=e.target.value;
+            }
+            render(){
+                return(                    
+                    <div style={{margin:'0px',width:'20%', display:'inline-block', paddingRight:'5px'}}>
+                            <input type="text" className="form-control" placeholder="Eg: a. ChoiceOne" onChange={(e=>{this.ChangeChoice(e)})}/>                             
+                    </div>                    
+                )
+            }
+        }
+
         ReactDOM.render(<ExaminationInfoComponent />,document.getElementById("ExamInfo"));
         ReactDOM.render(<PartContainerComponent />,document.getElementById("PartFormsContainer"));
 //FUNCTIONS
@@ -230,10 +381,46 @@
     //     //ReactDOM.render(<PartContainerComponent forms={PartForms} />,document.getElementById("PartFormsContainer"));
     // }
     </script>
+    <script type='text/javascript'>
+        function Export2Doc(elementId, filename = '') {
+            var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
+            var postHtml = "</body></html>";
+            var html = preHtml + document.getElementById(elementId).innerHTML + postHtml;
 
+            var blob = new Blob(['\ufeff', html], {
+                type: 'application/msword'
+            });
+
+            // Specify link url
+            var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+
+            // Specify file name
+            filename = filename ? filename + '.doc' : 'document.doc';
+
+            // Create download link element
+            var downloadLink = document.createElement("a");
+
+            document.body.appendChild(downloadLink);
+
+            if (navigator.msSaveOrOpenBlob) {
+                navigator.msSaveOrOpenBlob(blob, filename);
+            } else {
+                // Create a link to the file
+                downloadLink.href = url;
+
+                // Setting the file name
+                downloadLink.download = filename;
+
+                //triggering the function
+                downloadLink.click();
+            }
+
+            document.body.removeChild(downloadLink);
+        }
+    </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>        
 </body>
 
 </html>

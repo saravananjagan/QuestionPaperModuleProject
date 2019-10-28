@@ -1,0 +1,116 @@
+<html>
+
+<head>
+    <title>Question Paper Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
+    <style>
+        .stdSection {
+            width: 30%;
+            display: inline-block;
+        }
+
+        .stdText {
+            display: inline-block;
+        }
+
+        .halfrem {
+            margin-bottom: 0.5rem !important;
+        }
+
+        .border-shadow {
+            border-color: #ffffff !important;
+            /* box-shadow: 1px 1px 1px 1px grey; */
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+            -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+            -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+            -o-box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+            border-radius: 0px;
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="Questions">
+
+</div>
+<div id="questionscontainer" style="display: none;">
+    
+</div>
+<script type="text/babel">
+
+class QuestionComponent extends React.Component{
+    constructor(props){
+        super(props);
+        this.QuestionForms=[];
+        this.QuestionsData=[];
+        this.qid=0;
+        this.state={
+            questions:this.QuestionForms,
+            questdata:this.QuestionsData
+        }
+        this.AddQuestion=this.AddQuestion.bind(this);        
+    }
+    AddQuestion(){
+        var qidval=this.qid+"_q";        
+        this.QuestionForms.push(<QuestionInputComponent qid={qidval}/>);
+        this.QuestionsData.push(<QuestionPComponent qid={qidval} />);
+        this.setState({
+            questions:this.QuestionForms
+        });               
+        ReactDOM.render(<QuestionCollectionComp qcollection={this.QuestionsData} />,document.getElementById("questionscontainer"));
+        this.qid=this.qid+1;
+    }
+    render(){
+        return(
+            <div id="partsContainer" style={{margin: '0px;'}}>
+                <button type="button" className="btn btn-outline-primary" onClick={this.AddQuestion}>Add Question</button>
+                <div><br/>{this.state.questions}</div>
+            </div>
+        )
+    }
+}
+
+class QuestionInputComponent extends React.Component{
+    constructor(props){
+        super(props);
+        this.ChangeQuestion=this.ChangeQuestion.bind(this);
+        this.questid=this.props.qid;
+    }
+    ChangeQuestion(e){
+        document.getElementById(this.questid).textContent=e.target.value;        
+    }
+    render(){
+        return(
+            <div style={{margin: '0px;'}}>
+            <input type="text" className="form-control" placeholder="Question" onChange={(e)=>{this.ChangeQuestion(e)}}/> <br />
+            </div>
+        )
+    }
+}
+
+class QuestionPComponent extends React.Component{
+    render(){
+        return(
+            <p style={{margin: '0px;'}} className="quest" id={this.props.qid}></p>
+        )
+    }
+}
+
+class QuestionCollectionComp extends React.Component{
+    render(){
+        return(
+            <div style={{margin: '0px;'}}>
+                {this.props.qcollection}
+            </div>
+        )
+    }
+}
+
+ReactDOM.render(<QuestionComponent />,document.getElementById("Questions"));
+
+</script>
+</body>
+</html>
