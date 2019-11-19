@@ -6,6 +6,7 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom-server.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
     <style>
         .stdSection {
@@ -18,7 +19,7 @@
         }
 
         .halfrem {
-            margin-bottom: 0.5rem !important;
+            margin-bottom: 0.5rem !important;   
         }
 
         .border-shadow {
@@ -109,7 +110,52 @@ class QuestionCollectionComp extends React.Component{
     }
 }
 
-ReactDOM.render(<QuestionComponent />,document.getElementById("Questions"));
+/*
+LOGIC FOR INSERTING AN ITEM INTO ARRAY AT THE SPECIFIC INDEX
+*/
+class QuestionInput extends React.Component{
+    constructor(props){
+        super(props);
+        this.AddQuestions=this.AddQuestions.bind(this);
+    }
+    AddQuestions(e){
+        let inputTemplate = document.createElement('div');
+        inputTemplate.innerHTML='<input type="text" className="form-control" /><button type="button" className="btn btn-outline-primary" onClick={(e)=>{this.AddQuestions(e)}}>Add Question</button>'
+        //inputTemplate.id="inputTemplate";        
+        //ReactDOM.render(<QuestionInput/>,document.getElementById('inputTemplate'));                        
+        e.target.parentNode.parentNode.insertBefore(inputTemplate,e.target.parentNode);        
+    }
+    render(){
+        return(
+            <div>
+                <input type="text" className="form-control" placeholder="Question"/>
+                <button type="button" className="btn btn-outline-primary" onClick={(e)=>{this.AddQuestions(e)}}>Add Question</button>
+            </div>
+        )
+    }
+}
+
+class QuestionCollection extends React.Component{
+    constructor(props){
+        super(props);
+        this.insertAfter=this.insertAfter.bind(this);
+    }
+    insertAfter(el, referenceNode) {
+        console.log(el);
+        console.log(referenceNode);
+       referenceNode.parentNode.insertBefore(el, referenceNode.nextSibling);
+    }
+    render(){
+        return(
+            <div className="inputComponentCollection">
+                    <QuestionInput/>
+            </div>
+        )
+    }
+}
+
+ReactDOM.render(<QuestionCollection />,document.getElementById("Questions"));
+
 
 </script>
 </body>
