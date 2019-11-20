@@ -138,12 +138,6 @@ class QuestionInput extends React.Component{
 class QuestionCollection extends React.Component{
     constructor(props){
         super(props);
-        this.insertAfter=this.insertAfter.bind(this);
-    }
-    insertAfter(el, referenceNode) {
-        console.log(el);
-        console.log(referenceNode);
-       referenceNode.parentNode.insertBefore(el, referenceNode.nextSibling);
     }
     render(){
         return(
