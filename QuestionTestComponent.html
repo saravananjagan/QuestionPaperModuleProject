@@ -37,6 +37,7 @@
 <div class="container" id="Questions">
 
 </div>
+<div id="QuestTemp" style="display: none;"></div>
 <div id="questionscontainer" style="display: none;">
     
 </div>
@@ -119,11 +120,10 @@ class QuestionInput extends React.Component{
         this.AddQuestions=this.AddQuestions.bind(this);
     }
     AddQuestions(e){
-        let inputTemplate = document.createElement('div');
-        inputTemplate.innerHTML='<input type="text" className="form-control" /><button type="button" className="btn btn-outline-primary" onClick={(e)=>{this.AddQuestions(e)}}>Add Question</button>'
-        //inputTemplate.id="inputTemplate";        
-        //ReactDOM.render(<QuestionInput/>,document.getElementById('inputTemplate'));                        
-        e.target.parentNode.parentNode.insertBefore(inputTemplate,e.target.parentNode);        
+        ReactDOM.render(<QuestionInput/>,document.getElementById('QuestTemp')); 
+        let inputTemplate = document.getElementById('QuestTemp').firstChild;
+        console.log(inputTemplate);
+        e.target.parentNode.parentNode.insertBefore(inputTemplate,e.target.parentNode.nextSibling);        
     }
     render(){
         return(
