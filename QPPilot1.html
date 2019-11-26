@@ -4,6 +4,7 @@
     <title>Question Paper Form</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="shortcut icon" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">         
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
@@ -36,7 +37,7 @@
 <body style="margin: 20px;">
     <!-- Form for getting information of the examination -->
     <center>
-        <h2 class="text-success">Question Paper Generator</h2>                
+        <h2 class="text-success"></h2>                
     </center>
     <br/>
     <center>
@@ -116,7 +117,7 @@
         class QuestionQuestComp extends React.Component{
             render(){
                 return(
-                    <div style={{margin:'0px'}}>
+                    <div style={{margin:'0px'}} id={this.props.qid+"_Ediv"}>
                         <p style={{margin: '0px'}} class="quest" id={this.props.qid}></p>
                         <div style={{margin:'0px'}} id={this.props.pqcid}>                            
                         </div>
@@ -149,7 +150,7 @@
             }
         }
 
-        class OptionQuestComp extends React.Component{
+        class ChoiceQuestComp extends React.Component{
             render(){
                 return(
                     <td style={{width: '20%'}} id={this.props.cid}></td>
@@ -314,6 +315,7 @@
                 )
             }
         }
+
         class QuestionComponent extends React.Component{
             constructor(props){
                 super(props);
@@ -325,15 +327,21 @@
                 }
                 this.ChangeQuestion=this.ChangeQuestion.bind(this);
                 this.AddChoice=this.AddChoice.bind(this);
+                this.RemoveQuestion=this.RemoveQuestion.bind(this);
                 this.qid=this.props.qid;
             }
             ChangeQuestion(e){
                 document.getElementById(this.qid).textContent=e.target.value;
             }
+            RemoveQuestion(qId) {
+                document.getElementById(qId + "_Hdiv").remove();
+                document.getElementById(qId + "_Ediv").remove();
+            }                        
+
             AddChoice(){
                 var cid=this.cid+"_cqp"+this.qid;
                 this.ChoiceForms.push(<ChoiceInputComponent cid={cid} />);
-                this.ChoiceData.push(<OptionQuestComp cid={cid} />);
+                this.ChoiceData.push(<ChoiceQuestComp cid={cid} />);
                 this.setState({
                     choice:this.ChoiceForms
                 });
@@ -342,14 +350,14 @@
             }
             render(){
                 return(
-                    <div style={{margin:'0px'}}>
-                        <br />
-                        <input type="text" className="form-control" placeholder="Eg: 1. What is science?" onChange={(e)=>{this.ChangeQuestion(e)}}/> 
+                    <div style={{ margin: '0px' }} id={this.props.qid + "_Hdiv"}>
+                        <button type="button" className="btn btn-outline-danger" onClick={() => { this.RemoveQuestion(this.props.qid) }}>x</button>
+                        <input type="text" className="form-control" placeholder="Eg: 1. What is science?" onChange={(e) => { this.ChangeQuestion(e) }} />
                         <br />
                         <button type="button" className="btn btn-outline-primary" onClick={this.AddChoice}>Add Choice</button>
-                        
-                        <div style={{padding:'10px'}}>                         
-                        {this.state.choice}
+
+                        <div style={{ padding: '10px' }}>
+                            {this.state.choice}
                         </div>
                     </div>
                 )
@@ -359,14 +367,22 @@
         class ChoiceInputComponent extends React.Component{
             constructor(props){
                 super(props);
-                this.ChangeChoice=this.ChangeChoice.bind(this);
+                this.ChangeChoice=this.ChangeChoice.bind(this);                
+                this.RemoveChoice=this.RemoveChoice.bind(this);                
             }
+            RemoveChoice() {
+                console.log(this.props.cid);
+                document.getElementById(this.props.cid + "_Hdiv").remove();
+                document.getElementById(this.props.cid).remove();
+            }  
+
             ChangeChoice(e){
                 document.getElementById(this.props.cid).textContent=e.target.value;
             }
             render(){
-                return(                    
-                    <div style={{margin:'0px',width:'20%', display:'inline-block', paddingRight:'5px'}}>
+                return(      
+                    <div style={{margin:'0px',width:'20%', display:'inline-block', paddingRight:'5px'}} id={this.props.cid+"_Hdiv"}>
+                    <button className="btn btn-outline-danger"  onClick={()=>this.RemoveChoice()}>x</button>
                             <input type="text" className="form-control" placeholder="Eg: a. ChoiceOne" onChange={(e=>{this.ChangeChoice(e)})}/>                             
                     </div>                    
                 )
