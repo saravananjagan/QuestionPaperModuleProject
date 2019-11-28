@@ -381,31 +381,6 @@
                 )
             }
         }
-        
-        class ChoiceInputComponent extends React.Component{
-            constructor(props){
-                super(props);
-                this.ChangeChoice=this.ChangeChoice.bind(this);                
-                this.RemoveChoice=this.RemoveChoice.bind(this);                
-            }
-            RemoveChoice() {
-                console.log(this.props.cid);
-                document.getElementById(this.props.cid + "_Hdiv").remove();
-                document.getElementById(this.props.cid).remove();
-            }  
-
-            ChangeChoice(e){
-                document.getElementById(this.props.cid).textContent=e.target.value;
-            }
-            render(){
-                return(      
-                    <div style={{margin:'0px',width:'20%', display:'inline-block', paddingRight:'5px'}} id={this.props.cid+"_Hdiv"}>
-                    <button className="btn btn-outline-danger"  onClick={()=>this.RemoveChoice()}>x</button>
-                            <input type="text" className="form-control" placeholder="Eg: a. ChoiceOne" onChange={(e=>{this.ChangeChoice(e)})}/>                             
-                    </div>                    
-                )
-            }
-        }
 
         ReactDOM.render(<ExaminationInfoComponent />,document.getElementById("ExamInfo"));
         ReactDOM.render(<PartContainerComponent />,document.getElementById("PartFormsContainer"));
@@ -415,45 +390,8 @@
     //     //ReactDOM.render(<PartContainerComponent forms={PartForms} />,document.getElementById("PartFormsContainer"));
     // }
     </script>
-    <script type='text/javascript'>
-        function Export2Doc(elementId, filename = '') {
-            var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
-            var postHtml = "</body></html>";
-            var html = preHtml + document.getElementById(elementId).innerHTML + postHtml;
-
-            var blob = new Blob(['\ufeff', html], {
-                type: 'application/msword'
-            });
-
-            // Specify link url
-            var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
-
-            // Specify file name
-            filename = filename ? filename + '.doc' : 'document.doc';
-
-            // Create download link element
-            var downloadLink = document.createElement("a");
-
-            document.body.appendChild(downloadLink);
-
-            if (navigator.msSaveOrOpenBlob) {
-                //only for firefox
-                navigator.msSaveOrOpenBlob(blob, filename);
-            } else {
-                //for other browsers
-                // Create a link to the file
-                downloadLink.href = url;
-
-                // Setting the file name
-                downloadLink.download = filename;
-
-                //triggering the function
-                downloadLink.click();
-            }
-
-            document.body.removeChild(downloadLink);
-        }
-    </script>
+    <script type="text/jsx" src="FormComponents.jsx" crossorigin="anonymous"></script>
+    <script src="ExportToDoc.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>        

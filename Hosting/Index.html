@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <title>Question Paper Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
+    <style>
+        .stdSection {
+            width: 30%;
+            display: inline-block;
+        }
+
+        .stdText {
+            display: inline-block;
+        }
+
+        .halfrem {
+            margin-bottom: 0.5rem !important;
+        }
+
+        .border-shadow {
+            border-color: #ffffff !important;
+            /* box-shadow: 1px 1px 1px 1px grey; */
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+            -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+            -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+            -o-box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+            border-radius: 0px;
+        }
+        .remove{
+            padding-right: 0px;
+            padding-top: 0.3%;
+            max-width: 5%;
+        }
+        .round-button{
+            border-radius: 50%;
+        }
+        .m-b-10{
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body style="margin: 20px;">
+    <!-- Form for getting information of the examination -->
+    <center>
+        <h2 class="text-success"></h2>                
+    </center>
+    <br/>
+    <center>
+        <button class="btn btn-outline-success" onclick="Export2Doc('DocumentContent', 'word-content');">Export as .doc</button>
+    </center>
+    <br/>
+    <div class="container">
+        <div class="card border-primary" style="border-radius:0px" id="ExamInfo">
+        </div>
+    </div><br/>
+    <div class="container" id="PartFormsContainer">
+    </div>
+
+    <!-- Question Paper Template -->
+    <div id="DocumentContent" style="display:none; font-family:Calibri; font-size: 0.5rem;">
+        <!-- Examination Information Table (One for each question paper and need not loop up)-->
+        <table style="width: 100%; margin: 0px" id="ExamInfoQuest">
+        </table>                
+        <!-- Part Collection -->
+        <div style="margin:0px" id="PartCollectionContainer">
+        </div>
+    </div>
+    <script type="text/jsx" src="ExportComponents.jsx" crossorigin="anonymous"></script>
+    <script type="text/jsx" src="FormComponents.jsx" crossorigin="anonymous"></script>
+    <script src="ExportToDoc.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>        
+</body>
+
+</html>
