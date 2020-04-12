@@ -2,9 +2,11 @@
 
 <head>
     <title>Question Paper Form</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"> -->
+    <link href="bootstrap.min.css" rel="stylesheet" />
+    <link href="font-awesome.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
@@ -46,6 +48,7 @@
 </head>
 
 <body style="margin: 20px;">
+    
     <!-- Form for getting information of the examination -->
     <center>
         <h2 class="text-success"></h2>                
@@ -61,14 +64,14 @@
     </div><br/>
     <div class="container" id="PartFormsContainer">
     </div>
-
+    <div id="infoSubmitModalContainer"></div>
     <!-- Question Paper Template -->
     <div id="DocumentContent" style="display:none; font-family:Calibri; font-size: 0.5rem;">
         <!-- Examination Information Table (One for each question paper and need not loop up)-->
         <table style="width: 100%; margin: 0px" id="ExamInfoQuest">
         </table>                
         <!-- Part Collection -->
-        <div style="margin:0px" id="PartCollectionContainer">
+        <div style="margin:0px" id="PartCollectionContainer"></div>
         </div>
     </div>
     <script type='text/babel'>
@@ -225,8 +228,8 @@
                             placeholder="Subject Name" id="subName" ref={(c)=> this.sub=c} />
                         <br />
                         <div className="text-right">
-                            <button className="btn btn-outline-danger" onClick={this.resetExamInfo}>Reset</button>&emsp;<button type="button"
-                                className="btn btn-outline-success" onClick={this.submitExamInfo}>Submit</button>
+                            <button className="btn btn-outline-danger" type="button" onClick={this.resetExamInfo}>Reset</button>&emsp;<button type="button"
+                                className="btn btn-outline-success" onClick={this.submitExamInfo} data-toggle="modal" data-target="#ExamInfoSubmitModal" href="#ExamInfoSubmitModal">Submit</button>
                         </div>                     
                     </div>
                 );
@@ -382,6 +385,33 @@
             }
         }
 
+        class InfoSubmitModal extends React.Component {
+            constructor(props){
+                super(props)
+            }
+            render(){
+                return(
+                    <div id="ExamInfoSubmitModal" className="modal fade" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h3 id="ExInfoSubmitLabel">Info</h3>
+                                    <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                </div>
+                                <div className="modal-body">
+                                    <p>Examination Information has been submitted.</p>
+                                </div>
+                                <div className="modal-footer">
+                                    <button className="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                )
+            }
+        }
+
+        ReactDOM.render(<InfoSubmitModal />,document.getElementById("infoSubmitModalContainer"));
         ReactDOM.render(<ExaminationInfoComponent />,document.getElementById("ExamInfo"));
         ReactDOM.render(<PartContainerComponent />,document.getElementById("PartFormsContainer"));
 //FUNCTIONS
@@ -390,11 +420,13 @@
     //     //ReactDOM.render(<PartContainerComponent forms={PartForms} />,document.getElementById("PartFormsContainer"));
     // }
     </script>
-    <script type="text/jsx" src="FormComponents.jsx" crossorigin="anonymous"></script>
+    
     <script src="ExportToDoc.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>        
+        crossorigin="anonymous"></script>                           -->
+        <script src="bootstrap.min.js"></script> 
+        <script src="require.js"></script>       
 </body>
 
 </html>
